@@ -4,6 +4,7 @@ cu iconita, in loc de fisierul "Porneste ShotPut Lite.command".
 Pentru Windows, vezi sectiunea despre PyInstaller din CITESTE-MA.md.
 
 Pasi (in Terminal, pe Mac, in acest folder):
+    iconutil -c icns icon.iconset -o ShotPutLite.icns
     python3 -m venv .venv-build
     source .venv-build/bin/activate
     pip install py2app reportlab tkinterdnd2 plyer
@@ -22,6 +23,7 @@ OPTIONS = {
     "argv_emulation": False,
     "packages": ["reportlab", "tkinterdnd2", "plyer"],
     "includes": ["offload_engine", "pdf_report", "config"],
+    "iconfile": "ShotPutLite.icns",
     "plist": {
         "CFBundleName": "ShotPut Lite",
         "CFBundleDisplayName": "ShotPut Lite",

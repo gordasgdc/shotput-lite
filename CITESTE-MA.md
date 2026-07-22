@@ -10,6 +10,7 @@ Funcționează pe **macOS** și pe **Windows**.
 
 ## Funcții
 
+- **Iconiță personalizată** — inclusă pentru `.app` (Mac) și `.exe` (Windows), generată automat la compilare
 - **Drag-and-drop** — tragi direct folderul sursă (cardul) peste aplicație, la fel și pentru destinații (poți trage mai multe foldere deodată); butoanele "Alege manual..." rămân disponibile ca alternativă
 - **Copiere simultană** către oricâte destinații (drive extern, NAS, folder local etc.)
 - **Model de securitate selectabil** — alegi între MD5 (rapid, standard), SHA-1, SHA-256, SHA-512 (maxim de siguranță) sau doar verificare de dimensiune (cel mai rapid, fără checksum) — compromis viteză/siguranță, la fel ca la ShotPut Pro
@@ -36,12 +37,19 @@ ShotPutLite/
 ├── Porneste ShotPut Lite.command            <- lansator pentru Mac (dublu-click)
 ├── Porneste ShotPut Lite (Windows).bat      <- lansator pentru Windows (dublu-click)
 ├── setup.py                                 <- optional, pentru pachetare .app (Mac)
+├── icon.iconset/                            <- iconita sursa, pentru generarea .icns (Mac)
+├── ShotPutLite.ico                          <- iconita gata de folosit pentru Windows
+├── icon_master.png                          <- iconita la rezolutie mare (referinta/arhiva)
 ├── .github/workflows/build-windows.yml      <- optional, compileaza .exe automat in cloud
+├── .github/workflows/build-mac.yml          <- optional, compileaza .app automat in cloud
 └── CITESTE-MA.md                            <- acest fisier
 ```
 
 Toate cele 4 fișiere `.py` trebuie să rămână împreună, în același folder,
-indiferent de sistemul de operare.
+indiferent de sistemul de operare. Fișierele de iconiță (`icon.iconset/`,
+`ShotPutLite.ico`, `icon_master.png`) sunt folosite automat de workflow-urile
+GitHub Actions și de `setup.py` — nu trebuie să faci nimic manual cu ele
+dacă folosești build-ul din cloud.
 
 ---
 
@@ -124,6 +132,7 @@ faci din nou `git push`, se generează automat o versiune nouă de `.exe`
 
 ```bash
 cd ShotPutLite
+iconutil -c icns icon.iconset -o ShotPutLite.icns
 python3 -m venv .venv-build
 source .venv-build/bin/activate
 pip install py2app reportlab tkinterdnd2 plyer
@@ -131,9 +140,9 @@ python3 setup.py py2app
 deactivate
 ```
 
-Rezultatul apare în `dist/ShotPut Lite.app`. Îl poți muta în
-`/Applications`. Neavând cont Apple Developer, la prima rulare pe fiecare
-Mac va trebui aprobat o dată prin click-dreapta → Open.
+Rezultatul apare în `dist/ShotPut Lite.app`, cu iconița inclusă. Îl poți
+muta în `/Applications`. Neavând cont Apple Developer, la prima rulare pe
+fiecare Mac va trebui aprobat o dată prin click-dreapta → Open.
 
 ---
 
@@ -184,7 +193,7 @@ cd ShotPutLite
 python -m venv .venv-build
 .venv-build\Scripts\activate
 pip install pyinstaller reportlab tkinterdnd2 plyer
-pyinstaller --onefile --windowed --name "ShotPut Lite" main.py
+pyinstaller --onefile --windowed --name "ShotPut Lite" --icon=ShotPutLite.ico main.py
 deactivate
 ```
 

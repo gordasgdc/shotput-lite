@@ -28,6 +28,7 @@ jobs:
       - name: Compileaza .exe cu PyInstaller
         run: |
           pyinstaller --onefile --windowed --name "ShotPut Lite" `
+            --icon=ShotPutLite.ico `
             --hidden-import=offload_engine `
             --hidden-import=pdf_report `
             --hidden-import=config `
