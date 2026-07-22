@@ -134,6 +134,16 @@ poți folosi **GitHub Actions**: un calculator Windows temporar, gratuit,
 faci din nou `git push`, se generează automat o versiune nouă de `.exe`
 — nu trebuie să repeți pașii 1-3, doar `git add . && git commit -m "..." && git push`.
 
+**Același mecanism construiește și `.app`-ul pentru Mac** — fișierul
+`.github/workflows/build-mac.yml` (inclus tot în acest folder) rulează în
+paralel, automat, la fiecare `git push`. La pasul 4, în tab-ul "Actions",
+vei vedea **două** rulări separate: "Build ShotPut Lite (Windows .exe)" și
+"Build ShotPut Lite (Mac .app)". La pasul 5, artifactul pentru Mac se
+numește `ShotPut-Lite-Mac` și conține un `.zip` cu `ShotPut Lite.app`
+înăuntru. **Important:** acel `.app` descărcat va fi blocat de Gatekeeper
+la prima rulare pe orice Mac — vezi secțiunea "Aprobarea `.app`-ului
+nesemnat" de mai jos pentru pașii exacți de deblocare.
+
 ### Alternativ: `.app` pentru Mac (fără Windows, direct local)
 
 ```bash
@@ -146,8 +156,35 @@ deactivate
 ```
 
 Rezultatul apare în `dist/ShotPut Lite.app`, cu iconița inclusă. Îl poți
-muta în `/Applications`. Neavând cont Apple Developer, la prima rulare pe
-fiecare Mac va trebui aprobat o dată prin click-dreapta → Open.
+muta în `/Applications`.
+
+### Aprobarea `.app`-ului nesemnat (necesar pe FIECARE Mac, o singură dată per calculator)
+
+Neavând cont Apple Developer, macOS (Gatekeeper) blochează implicit acest
+`.app` pe orice Mac pe care e instalat — asta e normal, nu înseamnă că
+ceva e stricat. La dublu-click simplu, poate apărea un mesaj cu doar
+opțiunea "Move to Trash" (fără "Open"). Trebuie aprobat manual, o singură
+dată pe fiecare Mac:
+
+**Metoda 1 (cea mai simplă):** În Finder, click-dreapta (sau Control+click)
+pe `ShotPut Lite.app` → **"Open"** → în avertismentul care apare, de data
+asta există și butonul **"Open"** → apasă-l. De atunci încolo merge normal
+cu dublu-click.
+
+**Metoda 2 (dacă metoda 1 arată tot doar "Move to Trash"):** System
+Settings → Privacy & Security → derulează în jos → apare un mesaj despre
+`ShotPut Lite.app` blocat, cu butonul **"Open Anyway"** → apasă-l → încearcă
+din nou dublu-click (mai cere o confirmare finală).
+
+**Metoda 3 (din Terminal, sigură 100%):**
+```bash
+xattr -cr "/Applications/ShotPut Lite.app"
+```
+(ajustează calea dacă `.app`-ul nu e mutat în `/Applications`)
+
+Trimite aceste instrucțiuni oricărui coleg căruia îi distribui `.app`-ul —
+fiecare Mac are nevoie de această aprobare separat, nu e ceva rezolvat o
+singură dată global.
 
 ---
 
