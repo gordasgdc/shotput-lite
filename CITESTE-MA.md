@@ -37,7 +37,7 @@ ShotPutLite/
 ├── Porneste ShotPut Lite.command            <- lansator pentru Mac (dublu-click)
 ├── Porneste ShotPut Lite (Windows).bat      <- lansator pentru Windows (dublu-click)
 ├── setup.py                                 <- optional, pentru pachetare .app (Mac)
-├── icon.iconset/                            <- iconita sursa, pentru generarea .icns (Mac)
+├── ShotPutLite.icns                         <- iconita gata de folosit pentru Mac
 ├── ShotPutLite.ico                          <- iconita gata de folosit pentru Windows
 ├── icon_master.png                          <- iconita la rezolutie mare (referinta/arhiva)
 ├── .github/workflows/build-windows.yml      <- optional, compileaza .exe automat in cloud
@@ -46,10 +46,16 @@ ShotPutLite/
 ```
 
 Toate cele 4 fișiere `.py` trebuie să rămână împreună, în același folder,
-indiferent de sistemul de operare. Fișierele de iconiță (`icon.iconset/`,
+indiferent de sistemul de operare. Fișierele de iconiță (`ShotPutLite.icns`,
 `ShotPutLite.ico`, `icon_master.png`) sunt folosite automat de workflow-urile
 GitHub Actions și de `setup.py` — nu trebuie să faci nimic manual cu ele
 dacă folosești build-ul din cloud.
+
+**Notă despre descărcare:** dacă descarci fișierele individual din chat
+(nu ca o arhivă unică), verifică după copiere că toate fișierele de mai
+sus există local — unele browsere/Finder pot omite fișiere dacă le tragi
+unul câte unul. Cel mai sigur e să le descarci pe rând și să confirmi cu
+`ls -la` în Terminal că regăsești fiecare nume exact ca mai sus.
 
 ---
 
@@ -132,7 +138,6 @@ faci din nou `git push`, se generează automat o versiune nouă de `.exe`
 
 ```bash
 cd ShotPutLite
-iconutil -c icns icon.iconset -o ShotPutLite.icns
 python3 -m venv .venv-build
 source .venv-build/bin/activate
 pip install py2app reportlab tkinterdnd2 plyer

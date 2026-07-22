@@ -4,7 +4,6 @@ cu iconita, in loc de fisierul "Porneste ShotPut Lite.command".
 Pentru Windows, vezi sectiunea despre PyInstaller din CITESTE-MA.md.
 
 Pasi (in Terminal, pe Mac, in acest folder):
-    iconutil -c icns icon.iconset -o ShotPutLite.icns
     python3 -m venv .venv-build
     source .venv-build/bin/activate
     pip install py2app reportlab tkinterdnd2 plyer
@@ -13,6 +12,7 @@ Pasi (in Terminal, pe Mac, in acest folder):
 
 Rezultatul apare in folderul "dist/ShotPut Lite.app" - il poti muta apoi
 in Applications si il lansezi cu dublu-click ca orice alta aplicatie Mac.
+Iconita (ShotPutLite.icns) e deja inclusa in acest folder, gata de folosit.
 """
 
 from setuptools import setup
