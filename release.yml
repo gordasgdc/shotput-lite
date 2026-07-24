@@ -85,6 +85,32 @@ jobs:
           name: mac-build
           path: ShotPut-Lite-Mac.zip
 
+      - name: Creeaza instalatorul .pkg (curata automat carantina la instalare)
+        run: |
+          TAG="${{ github.event.inputs.tag || github.ref_name }}"
+          VERSION="${TAG#v}"
+          mkdir -p pkgroot/Applications
+          cp -R "dist/ShotPut Lite.app" "pkgroot/Applications/ShotPut Lite.app"
+          mkdir -p scripts
+          cat > scripts/postinstall << 'POSTEOF'
+          #!/bin/bash
+          xattr -cr "/Applications/ShotPut Lite.app" || true
+          exit 0
+          POSTEOF
+          chmod +x scripts/postinstall
+          pkgbuild --root pkgroot \
+            --scripts scripts \
+            --identifier personal.shotputlite \
+            --version "$VERSION" \
+            --install-location / \
+            "ShotPut-Lite-Mac-Installer.pkg"
+
+      - name: Salveaza .pkg pentru pasul de release
+        uses: actions/upload-artifact@v4
+        with:
+          name: mac-pkg-build
+          path: ShotPut-Lite-Mac-Installer.pkg
+
   create-release:
     needs: [build-windows, build-mac]
     runs-on: ubuntu-latest
@@ -95,10 +121,16 @@ jobs:
           name: windows-build
           path: release-files
 
-      - name: Descarca fisierul Mac compilat
+      - name: Descarca fisierul Mac compilat (.zip)
         uses: actions/download-artifact@v4
         with:
           name: mac-build
+          path: release-files
+
+      - name: Descarca instalatorul Mac (.pkg)
+        uses: actions/download-artifact@v4
+        with:
+          name: mac-pkg-build
           path: release-files
 
       - name: Creeaza Release-ul pe GitHub, cu fisierele atasate

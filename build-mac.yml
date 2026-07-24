@@ -38,3 +38,27 @@ jobs:
         with:
           name: ShotPut-Lite-Mac
           path: dist/ShotPut-Lite-Mac.zip
+
+      - name: Creeaza instalatorul .pkg (curata automat carantina la instalare)
+        run: |
+          mkdir -p pkgroot/Applications
+          cp -R "dist/ShotPut Lite.app" "pkgroot/Applications/ShotPut Lite.app"
+          mkdir -p scripts
+          cat > scripts/postinstall << 'POSTEOF'
+          #!/bin/bash
+          xattr -cr "/Applications/ShotPut Lite.app" || true
+          exit 0
+          POSTEOF
+          chmod +x scripts/postinstall
+          pkgbuild --root pkgroot \
+            --scripts scripts \
+            --identifier personal.shotputlite \
+            --version 1.0.0 \
+            --install-location / \
+            "ShotPut-Lite-Mac-Installer.pkg"
+
+      - name: Incarca .pkg ca artefact descarcabil
+        uses: actions/upload-artifact@v4
+        with:
+          name: ShotPut-Lite-Mac-Installer
+          path: ShotPut-Lite-Mac-Installer.pkg

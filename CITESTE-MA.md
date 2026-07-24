@@ -159,6 +159,28 @@ deactivate
 Rezultatul apare în `dist/ShotPut Lite.app`, cu iconița inclusă. Îl poți
 muta în `/Applications`.
 
+### Varianta `.pkg` (instalator, cu curățare automată de carantină)
+
+Pe lângă `.app`/`.zip`, build-ul din cloud produce automat și un fișier
+**`ShotPut Lite.app` ambalat ca instalator `.pkg`** — dublu-click deschide
+fereastra clasică de instalare macOS (cu cerere de parolă admin), care
+copiază aplicația în `/Applications` și rulează automat un script ce
+curăță orice steag de carantină de pe ea.
+
+**De reținut, ca să nu creeze așteptări greșite:** `.pkg`-ul **nu elimină**
+avertismentul inițial de la Gatekeeper — la prima deschidere a
+instalatorului însuși tot apare mesajul "de la un dezvoltator
+neidentificat" (aceeași aprobare descrisă mai jos, dar făcută o singură
+dată, pe instalator, nu pe aplicație). Ce câștigi cu `.pkg`-ul:
+- instalare curată, automată, în `/Applications` (nu mai tragi manual din Finder)
+- odată instalat, aplicația nu mai are NICIODATĂ nevoie de nicio aprobare — scriptul de instalare a curățat deja carantina
+- experiență familiară, ca la orice aplicație "de-adevăratelea"
+
+Singurul mod de a elimina **complet** avertismentul inițial (inclusiv pe
+instalator) e semnarea + notarizarea aplicației cu un cont Apple
+Developer plătit ($99/an) — dacă la un moment dat vrei asta, spune-mi și
+configurez și partea de semnare automată în workflow.
+
 ### Aprobarea `.app`-ului nesemnat (necesar pe FIECARE Mac, o singură dată per calculator)
 
 Neavând cont Apple Developer, macOS (Gatekeeper) blochează implicit acest
@@ -266,7 +288,8 @@ Asta declanșează automat build-ul pentru **ambele** platforme (Mac și
 Windows), iar la final creează o pagină de Release la
 `https://github.com/gordasgdc/shotput-lite/releases`, cu:
 
-- `ShotPut-Lite-Mac.zip` — conține `ShotPut Lite.app`
+- `ShotPut-Lite-Mac.zip` — conține `ShotPut Lite.app` (drag-and-drop manual în /Applications)
+- `ShotPut-Lite-Mac-Installer.pkg` — instalator (recomandat) — instalează automat + curăță carantina
 - `ShotPut-Lite-Windows.zip` — conține `ShotPut Lite.exe`
 - **Source code (zip)** și **Source code (tar.gz)** — adăugate automat de GitHub, cu tot codul sursă
 
