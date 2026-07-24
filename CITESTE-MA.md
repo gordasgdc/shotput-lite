@@ -42,6 +42,7 @@ ShotPutLite/
 ├── icon_master.png                          <- iconita la rezolutie mare (referinta/arhiva)
 ├── .github/workflows/build-windows.yml      <- optional, compileaza .exe automat in cloud
 ├── .github/workflows/build-mac.yml          <- optional, compileaza .app automat in cloud
+├── .github/workflows/release.yml            <- optional, publica Release oficial (Mac+Windows+source)
 └── CITESTE-MA.md                            <- acest fisier
 ```
 
@@ -240,6 +241,58 @@ deactivate
 ```
 
 Rezultatul apare în `dist\ShotPut Lite.exe`.
+
+---
+
+## Publicare oficială (GitHub Releases — Mac + Windows + Source code, ca la aplicațiile mari)
+
+În loc să distribui fișiere separate din tab-ul "Actions" (care sunt mai
+degrabă pentru testare), poți publica o pagină de **Release** oficială —
+exact ca la aplicațiile mari (ex. VS Code, Blender): o listă de versiuni,
+fiecare cu fișierele gata de descărcat pentru Mac, Windows, și codul sursă.
+
+Fișierul `.github/workflows/release.yml` (inclus în acest folder) face
+asta automat, de fiecare dată când creezi un **tag de versiune**.
+
+**Pași (din Terminal, pe Mac):**
+
+```bash
+cd ShotPutLite
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+Asta declanșează automat build-ul pentru **ambele** platforme (Mac și
+Windows), iar la final creează o pagină de Release la
+`https://github.com/gordasgdc/shotput-lite/releases`, cu:
+
+- `ShotPut-Lite-Mac.zip` — conține `ShotPut Lite.app`
+- `ShotPut-Lite-Windows.zip` — conține `ShotPut Lite.exe`
+- **Source code (zip)** și **Source code (tar.gz)** — adăugate automat de GitHub, cu tot codul sursă
+
+Durează 2-4 minute (rulează build-urile pentru ambele sisteme, apoi le
+combină). Poți urmări progresul în tab-ul "Actions", la workflow-ul
+"Release ShotPut Lite (Mac + Windows)".
+
+**Pentru o versiune nouă**, după ce mai faci modificări la cod, repeți
+doar cu un număr de tag diferit:
+
+```bash
+git add .
+git commit -m "Descrierea modificarilor"
+git push
+git tag v1.0.1
+git push origin v1.0.1
+```
+
+**Notă:** dacă greșești un tag și vrei să-l refaci (ex. release-ul a eșuat
+la jumătate), șterge-l întâi, altfel GitHub nu va retrigger workflow-ul pe
+același nume de tag:
+```bash
+git tag -d v1.0.0
+git push origin :refs/tags/v1.0.0
+```
+apoi recreează-l normal.
 
 ---
 
